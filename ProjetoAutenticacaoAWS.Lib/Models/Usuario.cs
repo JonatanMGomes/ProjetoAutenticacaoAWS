@@ -2,33 +2,27 @@ using ProjetoAutenticacaoAWS.Lib.MyExceptions;
 
 namespace ProjetoAutenticacaoAWS.Lib.Models
 {
-    public class Usuario
+    public class Usuario : ModelBase
     {
-        public int Id { get; private set; }
         public string Email { get; private set; }
         public string Cpf { get; private set; }
         public DateTime DataNascimento { get; private set; }
         public string Nome { get; private set; }
         public string Senha { get; private set; }
-        public string UrlImagemCadastro { get; private set; }
-        public DateTime DataCriacao { get; private set; }
+        public string? UrlImagemCadastro { get; private set; }
+        
         protected Usuario()
         {
 
         }
-        public Usuario(int id, string email, string cpf, DateTime dataNascimento, string nome, string senha, DateTime dataCriacao)
+        public Usuario(int id, string email, string cpf, DateTime dataNascimento, string nome, string senha, DateTime dataCriacao) :
+                       base(id, dataCriacao)
         {
-            SetId(id);
             SetEmail(email);
             SetCpf(cpf);
             SetDataNascimento(dataNascimento);
             SetNome(nome);
             SetSenha(senha);
-            SetDataCriacao(dataCriacao);
-        }
-        public void SetId(int id)
-        {
-            Id = id;
         }
         public void SetEmail(string email)
         {
@@ -53,10 +47,6 @@ namespace ProjetoAutenticacaoAWS.Lib.Models
         public void SetUrlImagemCadastro(string urlImagemCadastro)
         {
             UrlImagemCadastro = urlImagemCadastro;
-        }
-        public void SetDataCriacao(DateTime dataCriacao)
-        {
-            DataCriacao = dataCriacao;
         }
         public DateTime ValidarAnoNascimento(DateTime data)
         {

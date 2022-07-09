@@ -5,19 +5,8 @@ using System;
 
 namespace ProjetoAutenticacaoAWS.Test;
 
-public class UnitTest1
+public class usuarioTest
 {
-    [Fact]
-    public void TestandoSeUsuarioSalvaIdCorretamente()
-    {
-        //Arrange
-        var usuarioTest = new Usuario(1, "email@email", "11122233344", DateTime.Parse("11/07/1994"), "Fulano", "senha123",
-                                      DateTime.Now);
-        //Act
-        usuarioTest.SetId(2);
-        //Assert
-        Assert.Equal(2, usuarioTest.Id);
-    }
     [Fact]
     public void TestandoSeUsuarioSalvaEmailCorretamente()
     {
@@ -112,16 +101,5 @@ public class UnitTest1
                                                                    DateTime.Now));
         //Assert
         Assert.Equal("Senha precisa ter no mínimo 8 caracteres!", exceptionTest.Message);
-    }
-    [Fact]
-    public void TestandoSeUsuarioSalvaDataCriacaoCorretamente()
-    {
-        //Arrange
-        var usuarioTest = new Usuario(1, "email@email", "11122233344", DateTime.Parse("11/07/1994"), "Fulano", "senha123",
-                                      DateTime.Now);
-        //Act
-        usuarioTest.SetDataCriacao(DateTime.Parse("05/05/2005"));
-        //Assert
-        Assert.Equal(DateTime.Parse("05/05/2005"), usuarioTest.DataCriacao);
     }
 }
