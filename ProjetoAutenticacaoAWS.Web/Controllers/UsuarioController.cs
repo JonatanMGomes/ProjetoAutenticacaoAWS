@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using ProjetoAutenticacaoAWS.Lib.Data.Repositorios.Interfaces;
 using ProjetoAutenticacaoAWS.Lib.Models;
+using ProjetoAutenticacaoAWS.Lib.MyExceptions;
 using ProjetoAutenticacaoAWS.Web.DTOs;
 
 namespace ProjetoAutenticacaoAWS.Web.Controllers
@@ -16,34 +17,69 @@ namespace ProjetoAutenticacaoAWS.Web.Controllers
         }
 
         [HttpPost()]
-        public IActionResult CriarUsuario(UsuarioDTO usuarioDTO)
+        public async Task<IActionResult> CriarUsuario(UsuarioDTO usuarioDTO)
         {
-            var usuario = new Usuario(usuarioDTO.Id, usuarioDTO.Email, usuarioDTO.Cpf, usuarioDTO.DataNascimento,
+            try
+            {
+                var usuario = new Usuario(usuarioDTO.Id, usuarioDTO.Email, usuarioDTO.Cpf, usuarioDTO.DataNascimento,
                                       usuarioDTO.Nome, usuarioDTO.Senha, usuarioDTO.DataCriacao);
-            _repositorio.Adicionar(usuario);
-            return Ok();
+                await _repositorio.Adicionar(usuario);
+                return Ok();
+            }
+            catch (DadosInvalidosException ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
         [HttpGet()]
-        public IActionResult BuscarUsuarios()
+        public async Task<IActionResult> BuscarUsuarios()
         {
-            return Ok(_repositorio.BuscarTodos());
+            try
+            {
+                return Ok(await _repositorio.BuscarTodos());
+            }
+            catch (DadosInvalidosException ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
         [HttpGet("Id")]
-        public IActionResult BuscarUsuarioPorID(int id)
+        public async Task<IActionResult> BuscarUsuarioPorID(int id)
         {
-            return Ok(_repositorio.BuscarPorId(id));
+            try
+            {
+                return Ok(await _repositorio.BuscarPorId(id));
+            }
+            catch (DadosInvalidosException ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
         [HttpPut()]
-        public IActionResult AtualizarEmailUsuarioPorId(int id, string email)
+        public async Task<IActionResult> AtualizarEmailUsuarioPorId(int id, string email)
         {
-            _repositorio.AtualizarEmail(id, email);
-            return Ok();
+            try
+            {
+                await _repositorio.AtualizarEmail(id, email);
+                return Ok();
+            }
+            catch (DadosInvalidosException ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
         [HttpDelete()]
-        public IActionResult DeletarUsuarioPorID(int id)
+        public async Task<IActionResult> DeletarUsuarioPorID(int id)
         {
-            _repositorio.DeletarItemDesejado(id);
-            return Ok();
+            try
+            {
+                await _repositorio.DeletarItemDesejado(id);
+                return Ok();
+            }
+            catch (DadosInvalidosException ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
     }
 }

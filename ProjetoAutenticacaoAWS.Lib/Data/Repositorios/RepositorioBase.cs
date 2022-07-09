@@ -14,27 +14,27 @@ namespace ProjetoAutenticacaoAWS.Lib.Data.Repositorios
             _dbSet = dbSet;
         }
 
-        public void Adicionar(T item)
+        public async Task Adicionar(T item)
         {
-            _dbSet.Add(item);
-            _context.SaveChanges();
+            await _dbSet.AddAsync(item);
+            await _context.SaveChangesAsync();
         }
 
-        public T BuscarPorId(int id)
+        public async Task<T> BuscarPorId(int id)
         {
-            return _dbSet.AsNoTracking().First(x => x.Id == id);
+            return await _dbSet.AsNoTracking().FirstAsync(x => x.Id == id);
         }
 
-        public List<T> BuscarTodos()
+        public async Task<List<T>> BuscarTodos()
         {
-            return _dbSet.AsNoTracking().ToList();
+            return await _dbSet.AsNoTracking().ToListAsync();
         }
 
-        public void DeletarItemDesejado(int id)
+        public async Task DeletarItemDesejado(int id)
         {
-            var itemARemover = _dbSet.Find(id);
+            var itemARemover = await _dbSet.FindAsync(id);
             _dbSet.Remove(itemARemover);
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
         }
     }
 }

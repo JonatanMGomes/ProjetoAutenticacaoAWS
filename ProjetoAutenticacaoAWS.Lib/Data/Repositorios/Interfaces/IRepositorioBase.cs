@@ -4,9 +4,9 @@ namespace ProjetoAutenticacaoAWS.Lib.Data.Repositorios.Interfaces
 {
     public interface IRepositorioBase<T> where T : ModelBase
     {
-         void Adicionar(T item);
-         T BuscarPorId(int id);
-         List<T> BuscarTodos();
-         void DeletarItemDesejado(int id);
+         Task Adicionar(T item);
+         Task<T> BuscarPorId(int id);
+         Task<List<T>> BuscarTodos();
+         Task DeletarItemDesejado(int id);
     }
 }

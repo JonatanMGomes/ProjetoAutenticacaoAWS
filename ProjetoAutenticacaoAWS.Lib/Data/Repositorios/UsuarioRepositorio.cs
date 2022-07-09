@@ -9,10 +9,10 @@ namespace ProjetoAutenticacaoAWS.Lib.Data.Repositorios
         {
 
         }
-        public void AtualizarEmail(int id, string emailAtualizado)
+        public async Task AtualizarEmail(int id, string emailAtualizado)
         {
             _dbSet.Find(id).SetEmail(emailAtualizado);
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
         }
     }
 }
