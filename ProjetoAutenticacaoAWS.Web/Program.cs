@@ -1,3 +1,4 @@
+using Amazon.Rekognition;
 using Amazon.Runtime;
 using Amazon.S3;
 using Microsoft.EntityFrameworkCore;
@@ -26,7 +27,9 @@ builder.Services.AddSwaggerGen();
 var awsOptions = builder.Configuration.GetAWSOptions();
 awsOptions.Credentials = new EnvironmentVariablesAWSCredentials();
 builder.Services.AddDefaultAWSOptions(awsOptions);
+
 builder.Services.AddAWSService<IAmazonS3>();
+builder.Services.AddScoped<AmazonRekognitionClient>();
 
 var app = builder.Build();
 
