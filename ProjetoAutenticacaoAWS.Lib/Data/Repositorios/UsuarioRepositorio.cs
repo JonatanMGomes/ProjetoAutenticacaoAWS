@@ -14,5 +14,10 @@ namespace ProjetoAutenticacaoAWS.Lib.Data.Repositorios
             _dbSet.Find(id).SetEmail(emailAtualizado);
             await _context.SaveChangesAsync();
         }
+        public async Task AtualizarUrlImagemCadastro(int id, string urlAtualizada)
+        {
+            _dbSet.Find(id).SetUrlImagemCadastro(urlAtualizada);
+            await _context.SaveChangesAsync();
+        }
     }
 }
