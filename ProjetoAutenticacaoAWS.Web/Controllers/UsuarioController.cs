@@ -142,6 +142,49 @@ namespace ProjetoAutenticacaoAWS.Web.Controllers
             }
             return false;
         }
+        [HttpPost("LoginImagem")]
+        public async Task<IActionResult> LoginImagem(int id, IFormFile imagem)
+        {
+            var usuario = await _repositorio.BuscarPorId(id);
+            var verificacao = await VerificarImagem(usuario.UrlImagemCadastro, imagem);
+            if (verificacao)
+            {
+                return Ok();
+            }
+            return BadRequest("Face não compativel!");
+        }
+        private async Task<bool> VerificarImagem(string nomeArquivoS3, IFormFile fotoLogin)
+        {
+            using (var memStream = new MemoryStream())
+            {
+                var request = new CompareFacesRequest();
+
+                var requestSource = new Image()
+                {
+                    S3Object = new Amazon.Rekognition.Model.S3Object()
+                    {
+                        Bucket = "imagens-aulas",
+                        Name = nomeArquivoS3
+                    }
+                };
+
+                await fotoLogin.CopyToAsync(memStream);
+                var requestTarget = new Image()
+                {
+                    Bytes = memStream
+                };
+
+                request.SourceImage = requestSource;
+                request.TargetImage = requestTarget;
+
+                var response = await _rekognitionClient.CompareFacesAsync(request);
+                if (response.FaceMatches.Count == 1 && response.FaceMatches.First().Similarity >= 90)
+                {
+                    return true;
+                }
+                return false;
+            }
+        }
         [HttpPut()]
         public async Task<IActionResult> AtualizarEmailUsuarioPorId(int id, string email)
         {
