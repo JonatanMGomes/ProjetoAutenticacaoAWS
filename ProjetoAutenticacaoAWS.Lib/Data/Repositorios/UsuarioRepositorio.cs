@@ -1,3 +1,4 @@
+using Microsoft.EntityFrameworkCore;
 using ProjetoAutenticacaoAWS.Lib.Data.Repositorios.Interfaces;
 using ProjetoAutenticacaoAWS.Lib.Models;
 
@@ -18,6 +19,10 @@ namespace ProjetoAutenticacaoAWS.Lib.Data.Repositorios
         {
             _dbSet.Find(id).SetUrlImagemCadastro(urlAtualizada);
             await _context.SaveChangesAsync();
+        }
+        public async Task<Usuario> BuscarPorEmail(string email)
+        {
+            return await _dbSet.AsNoTracking().FirstAsync(x => x.Email == email);
         }
     }
 }
