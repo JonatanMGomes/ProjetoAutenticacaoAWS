@@ -123,6 +123,25 @@ namespace ProjetoAutenticacaoAWS.Web.Controllers
                 return BadRequest(ex.Message);
             }
         }
+        [HttpGet("LoginEmail")]
+        public async Task<IActionResult> LoginEmail(string email, string senha)
+        {
+            var usuario = await _repositorio.BuscarPorEmail(email);
+            var validacao = await VerificarSenha(usuario, senha);
+            if (validacao)
+            {
+                return Ok(usuario.Id);
+            }
+            return BadRequest("Senha incorreta!");
+        }
+        private async Task<bool> VerificarSenha(Usuario usuario, string senha)
+        {
+            if (usuario.Senha == senha)
+            {
+                return true;
+            }
+            return false;
+        }
         [HttpPut()]
         public async Task<IActionResult> AtualizarEmailUsuarioPorId(int id, string email)
         {
