@@ -11,8 +11,7 @@ public class usuarioTest
     public void TestandoSeUsuarioSalvaEmailCorretamente()
     {
         //Arrange
-        var usuarioTest = new Usuario(1, "email@email", "11122233344", DateTime.Parse("11/07/1994"), "Fulano", "senha123",
-                                      DateTime.Now);
+        var usuarioTest = CriarUsuarioTest();
         //Act
         usuarioTest.SetEmail("teste@email");
         //Assert
@@ -32,8 +31,7 @@ public class usuarioTest
     public void TestandoSeUsuarioSalvaCpfCorretamente()
     {
         //Arrange
-        var usuarioTest = new Usuario(1, "email@email", "11122233344", DateTime.Parse("11/07/1994"), "Fulano", "senha123",
-                                      DateTime.Now);
+        var usuarioTest = CriarUsuarioTest();
         //Act
         usuarioTest.SetCpf("11122233377");
         //Assert
@@ -53,8 +51,7 @@ public class usuarioTest
     public void TestandoSeUsuarioSalvaDataNascimentoCorretamente()
     {
         //Arrange
-        var usuarioTest = new Usuario(1, "email@email", "11122233344", DateTime.Parse("11/07/1994"), "Fulano", "senha123",
-                                      DateTime.Now);
+        var usuarioTest = CriarUsuarioTest();
         //Act
         usuarioTest.SetDataNascimento(DateTime.Parse("21/06/1997"));
         //Assert
@@ -74,8 +71,7 @@ public class usuarioTest
     public void TestandoSeUsuarioSalvaNomeCorretamente()
     {
         //Arrange
-        var usuarioTest = new Usuario(1, "email@email", "11122233344", DateTime.Parse("11/07/1994"), "Fulano", "senha123",
-                                      DateTime.Now);
+        var usuarioTest = CriarUsuarioTest();
         //Act
         usuarioTest.SetNome("Neo");
         //Assert
@@ -85,8 +81,7 @@ public class usuarioTest
     public void TestandoSeUsuarioSalvaSenhaCorretamente()
     {
         //Arrange
-        var usuarioTest = new Usuario(1, "email@email", "11122233344", DateTime.Parse("11/07/1994"), "Fulano", "senha123",
-                                      DateTime.Now);
+        var usuarioTest = CriarUsuarioTest();
         //Act
         usuarioTest.SetSenha("123456789");
         //Assert
@@ -101,5 +96,11 @@ public class usuarioTest
                                                                    DateTime.Now));
         //Assert
         Assert.Equal("Senha precisa ter no mínimo 8 caracteres!", exceptionTest.Message);
+    }
+    private Usuario CriarUsuarioTest()
+    {
+        var usuarioTest = new Usuario(1, "email@email", "11122233344", DateTime.Parse("11/07/1994"), "Fulano", "senha123",
+                                      DateTime.Now);
+        return usuarioTest;
     }
 }

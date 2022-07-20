@@ -11,7 +11,7 @@ namespace ProjetoAutenticacaoAWS.Test
         public void TestandoSeUsuarioSalvaIdCorretamente()
         {
             //Arrange
-            var baseTest = new ModelBase(1, DateTime.Now);
+            var baseTest = CriarModelTest();
             //Act
             baseTest.SetId(2);
             //Assert
@@ -21,11 +21,16 @@ namespace ProjetoAutenticacaoAWS.Test
         public void TestandoSeUsuarioSalvaDataCriacaoCorretamente()
         {
             //Arrange
-            var baseTest = new ModelBase(1, DateTime.Now);
+            var baseTest = CriarModelTest();
             //Act
             baseTest.SetDataCriacao(DateTime.Parse("05/05/2005"));
             //Assert
             Assert.Equal(DateTime.Parse("05/05/2005"), baseTest.DataCriacao);
+        }
+        private ModelBase CriarModelTest()
+        {
+            var modelTest = new ModelBase(1, DateTime.Now);
+            return modelTest;
         }
     }
 }
