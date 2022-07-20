@@ -34,7 +34,7 @@ namespace ProjetoAutenticacaoAWS.Web.Controllers
                 var usuario = new Usuario(usuarioDTO.Id, usuarioDTO.Email, usuarioDTO.Cpf, usuarioDTO.DataNascimento,
                                       usuarioDTO.Nome, usuarioDTO.Senha, usuarioDTO.DataCriacao);
                 await _repositorio.Adicionar(usuario);
-                return Ok();
+                return Ok(usuario.Id);
             }
             catch (DadosInvalidosException ex)
             {
