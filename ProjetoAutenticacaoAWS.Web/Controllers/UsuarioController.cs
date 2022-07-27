@@ -1,12 +1,6 @@
-using Amazon.Rekognition;
-using Amazon.Rekognition.Model;
-using Amazon.S3;
-using Amazon.S3.Model;
 using Microsoft.AspNetCore.Mvc;
-using ProjetoAutenticacaoAWS.Lib.Data.Repositorios.Interfaces;
-using ProjetoAutenticacaoAWS.Lib.Models;
-using ProjetoAutenticacaoAWS.Lib.MyExceptions;
-using ProjetoAutenticacaoAWS.Web.DTOs;
+using ProjetoAutenticacaoAWS.Application.DTOs;
+using ProjetoAutenticacaoAWS.Application.Services;
 
 namespace ProjetoAutenticacaoAWS.Web.Controllers
 {
@@ -14,16 +8,12 @@ namespace ProjetoAutenticacaoAWS.Web.Controllers
     [Route("[controller]")]
     public class UsuarioController : ControllerBase
     {
-        private readonly IUsuarioRepositorio _repositorio;
-        private readonly IAmazonS3 _amazonS3;
-        private static readonly List<string> _extensoesImagem =
-        new List<string>() { "image/jpeg", "image/png" };
-        private readonly AmazonRekognitionClient _rekognitionClient;
-        public UsuarioController(IUsuarioRepositorio repositorio, IAmazonS3 amazonS3, AmazonRekognitionClient rekognitionClient)
+        private readonly IUsuarioApplication _application;
+        public ILogger<UsuarioController> _log { get; set; }
+        public UsuarioController(IUsuarioApplication application, ILogger<UsuarioController> log)
         {
-            _repositorio = repositorio;
-            _amazonS3 = amazonS3;
-            _rekognitionClient = rekognitionClient;
+            _application = application;
+            _log = log;
         }
 
         [HttpPost()]
@@ -31,83 +21,40 @@ namespace ProjetoAutenticacaoAWS.Web.Controllers
         {
             try
             {
-                var usuario = new Usuario(usuarioDTO.Id, usuarioDTO.Email, usuarioDTO.Cpf, usuarioDTO.DataNascimento,
-                                      usuarioDTO.Nome, usuarioDTO.Senha, usuarioDTO.DataCriacao);
-                await _repositorio.Adicionar(usuario);
-                return Ok(usuario.Id);
+                var resposta = await _application.CriarUsuario(usuarioDTO);
+                return Ok(resposta);
             }
-            catch (DadosInvalidosException ex)
+            catch (Exception ex)
             {
+                _log.LogError(ex.Message);
                 return BadRequest(ex.Message);
             }
         }
         [HttpPost("imagem")]
         public async Task<IActionResult> CadastrarImagem(int id, IFormFile imagem)
         {
-            var nomeArquivo = await SalvarNoS3(imagem);
-            var imagemValida = await ValidarImagem(nomeArquivo);
-            if (imagemValida)
+            try
             {
-                await _repositorio.AtualizarUrlImagemCadastro(id, nomeArquivo);
+                await _application.CadastrarImagem(id, imagem);
                 return Ok();
             }
-            else
+            catch (Exception ex)
             {
-                var response = await _amazonS3.DeleteObjectAsync("imagens-aulas", nomeArquivo);
-                return BadRequest("Imagem inválida!");
+                _log.LogError(ex.Message);
+                return BadRequest(ex.Message);
             }
-        }
-        private async Task<string> SalvarNoS3(IFormFile imagem)
-        {
-            if (!_extensoesImagem.Contains(imagem.ContentType))
-            {
-                throw new Exception("tipo inválido!");
-            }
-            using (var streamDaImagem = new MemoryStream())
-            {
-                await imagem.CopyToAsync(streamDaImagem);
-                var request = new PutObjectRequest();
-                request.Key = "recFacial " + imagem.FileName;
-                request.BucketName = "imagens-aulas";
-                request.InputStream = streamDaImagem;
-
-                var resposta = await _amazonS3.PutObjectAsync(request);
-                return request.Key;
-            }
-        }
-        private async Task<bool> ValidarImagem(string nomeArquivo)
-        {
-            var request = new DetectFacesRequest();
-            var imagem = new Image();
-
-            var s3Object = new Amazon.Rekognition.Model.S3Object()
-            {
-                Bucket = "imagens-aulas",
-                Name = nomeArquivo
-
-            };
-
-            imagem.S3Object = s3Object;
-            request.Image = imagem;
-            request.Attributes = new List<string>() { "ALL" };
-
-            var response = await _rekognitionClient.DetectFacesAsync(request);
-
-            if (response.FaceDetails.Count == 1 && response.FaceDetails.First().Eyeglasses.Value == false)
-            {
-                return true;
-            }
-            return false;
         }
         [HttpGet()]
         public async Task<IActionResult> BuscarUsuarios()
         {
             try
             {
-                return Ok(await _repositorio.BuscarTodos());
+                var resposta = await _application.BuscarUsuarios();
+                return Ok(resposta);
             }
-            catch (DadosInvalidosException ex)
+            catch (Exception ex)
             {
+                _log.LogError(ex.Message);
                 return BadRequest(ex.Message);
             }
         }
@@ -116,85 +63,54 @@ namespace ProjetoAutenticacaoAWS.Web.Controllers
         {
             try
             {
-                return Ok(await _repositorio.BuscarPorId(id));
+                var resposta = await _application.BuscarUsuarioPorID(id);
+                return Ok(resposta);
             }
-            catch (DadosInvalidosException ex)
+            catch (Exception ex)
             {
+                _log.LogError(ex.Message);
                 return BadRequest(ex.Message);
             }
         }
         [HttpGet("LoginEmail")]
         public async Task<IActionResult> LoginEmail(string email, string senha)
         {
-            var usuario = await _repositorio.BuscarPorEmail(email);
-            var validacao = await VerificarSenha(usuario, senha);
-            if (validacao)
+            try
             {
-                return Ok(usuario.Id);
+                var resposta = await _application.LoginEmail(email, senha);
+                return Ok(resposta);
             }
-            return BadRequest("Senha incorreta!");
-        }
-        private async Task<bool> VerificarSenha(Usuario usuario, string senha)
-        {
-            if (usuario.Senha == senha)
+            catch (Exception ex)
             {
-                return true;
+                _log.LogError(ex.Message);
+                return BadRequest(ex.Message);
             }
-            return false;
         }
         [HttpPost("LoginImagem")]
         public async Task<IActionResult> LoginImagem(int id, IFormFile imagem)
         {
-            var usuario = await _repositorio.BuscarPorId(id);
-            var verificacao = await VerificarImagem(usuario.UrlImagemCadastro, imagem);
-            if (verificacao)
+            try
             {
+                await _application.LoginImagem(id, imagem);
                 return Ok();
             }
-            return BadRequest("Face não compativel!");
-        }
-        private async Task<bool> VerificarImagem(string nomeArquivoS3, IFormFile fotoLogin)
-        {
-            using (var memStream = new MemoryStream())
+            catch (Exception ex)
             {
-                var request = new CompareFacesRequest();
-
-                var requestSource = new Image()
-                {
-                    S3Object = new Amazon.Rekognition.Model.S3Object()
-                    {
-                        Bucket = "imagens-aulas",
-                        Name = nomeArquivoS3
-                    }
-                };
-
-                await fotoLogin.CopyToAsync(memStream);
-                var requestTarget = new Image()
-                {
-                    Bytes = memStream
-                };
-
-                request.SourceImage = requestSource;
-                request.TargetImage = requestTarget;
-
-                var response = await _rekognitionClient.CompareFacesAsync(request);
-                if (response.FaceMatches.Count == 1 && response.FaceMatches.First().Similarity >= 90)
-                {
-                    return true;
-                }
-                return false;
+                _log.LogError(ex.Message);
+                return BadRequest(ex.Message);
             }
         }
-        [HttpPut()]
+        [HttpPut("Email")]
         public async Task<IActionResult> AtualizarEmailUsuarioPorId(int id, string email)
         {
             try
             {
-                await _repositorio.AtualizarEmail(id, email);
+                await _application.AtualizarEmailUsuarioPorId(id, email);
                 return Ok();
             }
-            catch (DadosInvalidosException ex)
+            catch (Exception ex)
             {
+                _log.LogError(ex.Message);
                 return BadRequest(ex.Message);
             }
         }
@@ -203,11 +119,12 @@ namespace ProjetoAutenticacaoAWS.Web.Controllers
         {
             try
             {
-                await _repositorio.DeletarItemDesejado(id);
+                await _application.DeletarUsuarioPorID(id);
                 return Ok();
             }
-            catch (DadosInvalidosException ex)
+            catch (Exception ex)
             {
+                _log.LogError(ex.Message);
                 return BadRequest(ex.Message);
             }
         }

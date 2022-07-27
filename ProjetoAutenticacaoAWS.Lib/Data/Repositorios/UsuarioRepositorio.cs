@@ -22,7 +22,7 @@ namespace ProjetoAutenticacaoAWS.Lib.Data.Repositorios
         }
         public async Task<Usuario> BuscarPorEmail(string email)
         {
-            return await _dbSet.AsNoTracking().FirstAsync(x => x.Email == email);
+            return await _dbSet.AsNoTracking().FirstOrDefaultAsync(x => x.Email == email);
         }
     }
 }
