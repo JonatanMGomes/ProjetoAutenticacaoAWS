@@ -1,4 +1,4 @@
-namespace ProjetoAutenticacaoAWS.Web.DTOs
+namespace ProjetoAutenticacaoAWS.Application.DTOs
 {
     public class UsuarioDTO
     {
@@ -8,7 +8,6 @@ namespace ProjetoAutenticacaoAWS.Web.DTOs
         public DateTime DataNascimento { get;  set; }
         public string Nome { get;  set; }
         public string Senha { get;  set; }
-        public string? UrlImagemCadastro { get;  set; }
         public DateTime DataCriacao { get;  set; }
     }
 }
