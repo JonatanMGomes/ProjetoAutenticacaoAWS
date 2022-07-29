@@ -1,4 +1,5 @@
 using ProjetoAutenticacaoAWS.Application.Services;
+using ProjetoAutenticacaoAWS.Web.Middlewares;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -21,6 +22,8 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+app.UseMiddleware<ExceptionMiddleware>();
 
 app.UseHttpsRedirection();
 
