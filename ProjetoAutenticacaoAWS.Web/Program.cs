@@ -1,4 +1,4 @@
-using ProjetoAutenticacaoAWS.Application.Services;
+using ProjetoAutenticacaoAWS.Dependencies;
 using ProjetoAutenticacaoAWS.Web.Middlewares;
 
 var builder = WebApplication.CreateBuilder(args);

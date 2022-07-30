@@ -1,0 +1,21 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <ItemGroup>
+    <ProjectReference Include="..\ProjetoAutenticacaoAWS.Application\ProjetoAutenticacaoAWS.Application.csproj" />
+    <ProjectReference Include="..\ProjetoAutenticacaoAWS.Lib\ProjetoAutenticacaoAWS.Lib.csproj" />
+    <ProjectReference Include="..\ProjetoAutenticacaoAWS.Services\ProjetoAutenticacaoAWS.Services.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="AWSSDK.Rekognition" Version="3.7.9.3" />
+    <PackageReference Include="AWSSDK.S3" Version="3.7.9.34" />
+    <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="6.0.5" />
+  </ItemGroup>
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+</Project>

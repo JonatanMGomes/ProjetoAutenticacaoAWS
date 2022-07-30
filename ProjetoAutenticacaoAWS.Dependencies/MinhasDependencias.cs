@@ -4,12 +4,13 @@ using Amazon.S3;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using ProjetoAutenticacaoAWS.Application.Services;
 using ProjetoAutenticacaoAWS.Lib.Data;
 using ProjetoAutenticacaoAWS.Lib.Data.Repositorios;
 using ProjetoAutenticacaoAWS.Lib.Data.Repositorios.Interfaces;
 using ProjetoAutenticacaoAWS.Services;
 
-namespace ProjetoAutenticacaoAWS.Application.Services
+namespace ProjetoAutenticacaoAWS.Dependencies
 {
     public static class MinhasDependencias
     {

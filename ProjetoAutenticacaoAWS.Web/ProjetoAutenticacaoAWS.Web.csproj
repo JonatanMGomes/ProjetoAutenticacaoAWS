@@ -15,6 +15,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\ProjetoAutenticacaoAWS.Application\ProjetoAutenticacaoAWS.Application.csproj" />
+    <ProjectReference Include="..\ProjetoAutenticacaoAWS.Dependencies\ProjetoAutenticacaoAWS.Dependencies.csproj" />
   </ItemGroup>
 
 </Project>

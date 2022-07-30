@@ -13,6 +13,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProjetoAutenticacaoAWS.Appl
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProjetoAutenticacaoAWS.Services", "ProjetoAutenticacaoAWS.Services\ProjetoAutenticacaoAWS.Services.csproj", "{898F0101-C099-4CFD-AA29-F56C7F8858E7}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProjetoAutenticacaoAWS.Dependencies", "ProjetoAutenticacaoAWS.Dependencies\ProjetoAutenticacaoAWS.Dependencies.csproj", "{CE3D28A4-9AD4-4F78-B69F-FE9311624CC4}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -42,5 +44,9 @@ Global
 		{898F0101-C099-4CFD-AA29-F56C7F8858E7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{898F0101-C099-4CFD-AA29-F56C7F8858E7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{898F0101-C099-4CFD-AA29-F56C7F8858E7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CE3D28A4-9AD4-4F78-B69F-FE9311624CC4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CE3D28A4-9AD4-4F78-B69F-FE9311624CC4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CE3D28A4-9AD4-4F78-B69F-FE9311624CC4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CE3D28A4-9AD4-4F78-B69F-FE9311624CC4}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
