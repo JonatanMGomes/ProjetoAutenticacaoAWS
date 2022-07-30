@@ -7,6 +7,7 @@ using Microsoft.Extensions.DependencyInjection;
 using ProjetoAutenticacaoAWS.Lib.Data;
 using ProjetoAutenticacaoAWS.Lib.Data.Repositorios;
 using ProjetoAutenticacaoAWS.Lib.Data.Repositorios.Interfaces;
+using ProjetoAutenticacaoAWS.Services;
 
 namespace ProjetoAutenticacaoAWS.Application.Services
 {
@@ -21,6 +22,7 @@ namespace ProjetoAutenticacaoAWS.Application.Services
 
             collection.AddScoped<IUsuarioRepositorio, UsuarioRepositorio>();
             collection.AddScoped<IUsuarioApplication, UsuarioApplication>();
+            collection.AddScoped<ServicesAWS>();
 
             var awsOptions = configuration.GetAWSOptions();
             awsOptions.Credentials = new EnvironmentVariablesAWSCredentials();
