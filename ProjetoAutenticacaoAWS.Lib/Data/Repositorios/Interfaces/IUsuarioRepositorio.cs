@@ -4,8 +4,8 @@ namespace ProjetoAutenticacaoAWS.Lib.Data.Repositorios.Interfaces
 {
     public interface IUsuarioRepositorio : IRepositorioBase<Usuario>
     {
-         Task AtualizarEmail(int id, string emailAtualizado);
-         Task AtualizarUrlImagemCadastro(int id, string urlAtualizada);
+         Task AtualizarEmail(Guid id, string emailAtualizado);
+         Task AtualizarUrlImagemCadastro(Guid id, string urlAtualizada);
          Task<Usuario> BuscarPorEmail(string email);
     }
 }

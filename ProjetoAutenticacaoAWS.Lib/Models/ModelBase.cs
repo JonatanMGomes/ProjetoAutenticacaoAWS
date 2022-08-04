@@ -2,18 +2,18 @@ namespace ProjetoAutenticacaoAWS.Lib.Models
 {
     public class ModelBase
     {
-        public int Id { get; private set; }
+        public Guid Id { get; private set; }
         public DateTime DataCriacao { get; private set; }
         protected ModelBase()
         {
             
         }
-        public ModelBase(int id,  DateTime dataCriacao)
+        public ModelBase(Guid id,  DateTime dataCriacao)
         {
             SetId(id);
             SetDataCriacao(dataCriacao);
         }
-        public void SetId(int id)
+        public void SetId(Guid id)
         {
             Id = id;
         }

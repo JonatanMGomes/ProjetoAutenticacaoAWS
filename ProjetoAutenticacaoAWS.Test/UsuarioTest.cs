@@ -21,7 +21,7 @@ public class usuarioTest
     public void TestandoSeUsuarioNaoSalvaEmailIncorreto()
     {
         //Arrange-Act
-        var exceptionTest = Assert.Throws<DadosInvalidosException>(() => new Usuario(1, "emailemail", "11122233344",
+        var exceptionTest = Assert.Throws<DadosInvalidosException>(() => new Usuario("emailemail", "11122233344",
                                                                    DateTime.Parse("11/07/1994"), "Fulano", "senha123",
                                                                    DateTime.Now));
         //Assert
@@ -41,7 +41,7 @@ public class usuarioTest
     public void TestandoSeUsuarioNaoSalvaCpfIncorreto()
     {
         //Arrange-Act
-        var exceptionTest = Assert.Throws<DadosInvalidosException>(() => new Usuario(1, "email@email", "111222333444",
+        var exceptionTest = Assert.Throws<DadosInvalidosException>(() => new Usuario("email@email", "111222333444",
                                                                    DateTime.Parse("11/07/1994"), "Fulano", "senha123",
                                                                    DateTime.Now));
         //Assert
@@ -61,7 +61,7 @@ public class usuarioTest
     public void TestandoSeUsuarioNaoSalvaAnoNascimentoIncorreto()
     {
         //Arrange-Act
-        var exceptionTest = Assert.Throws<DadosInvalidosException>(() => new Usuario(1, "email@email", "11122233344",
+        var exceptionTest = Assert.Throws<DadosInvalidosException>(() => new Usuario("email@email", "11122233344",
                                                                    DateTime.Parse("11/07/2011"), "Fulano", "senha123",
                                                                    DateTime.Now));
         //Assert
@@ -91,7 +91,7 @@ public class usuarioTest
     public void TestandoSeUsuarioNaoSalvaSenhaIncorreta()
     {
         //Arrange-Act
-        var exceptionTest = Assert.Throws<DadosInvalidosException>(() => new Usuario(1, "email@email", "11122233344",
+        var exceptionTest = Assert.Throws<DadosInvalidosException>(() => new Usuario("email@email", "11122233344",
                                                                    DateTime.Parse("11/07/1994"), "Fulano", "senha",
                                                                    DateTime.Now));
         //Assert
@@ -99,7 +99,7 @@ public class usuarioTest
     }
     private Usuario CriarUsuarioTest()
     {
-        var usuarioTest = new Usuario(1, "email@email", "11122233344", DateTime.Parse("11/07/1994"), "Fulano", "senha123",
+        var usuarioTest = new Usuario("email@email", "11122233344", DateTime.Parse("11/07/1994"), "Fulano", "senha123",
                                       DateTime.Now);
         return usuarioTest;
     }

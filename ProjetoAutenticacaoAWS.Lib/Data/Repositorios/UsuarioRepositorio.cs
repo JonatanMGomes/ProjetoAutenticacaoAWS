@@ -10,12 +10,12 @@ namespace ProjetoAutenticacaoAWS.Lib.Data.Repositorios
         {
 
         }
-        public async Task AtualizarEmail(int id, string emailAtualizado)
+        public async Task AtualizarEmail(Guid id, string emailAtualizado)
         {
             _dbSet.Find(id).SetEmail(emailAtualizado);
             await _context.SaveChangesAsync();
         }
-        public async Task AtualizarUrlImagemCadastro(int id, string urlAtualizada)
+        public async Task AtualizarUrlImagemCadastro(Guid id, string urlAtualizada)
         {
             _dbSet.Find(id).SetUrlImagemCadastro(urlAtualizada);
             await _context.SaveChangesAsync();

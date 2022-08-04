@@ -17,14 +17,14 @@ namespace ProjetoAutenticacaoAWS.Application.Services
             _servicesAWS = servicesAWS;
         }
 
-        public async Task<int> CriarUsuario(UsuarioDTO usuarioDTO)
+        public async Task<Guid> CriarUsuario(UsuarioDTO usuarioDTO)
         {
-            var usuario = new Usuario(usuarioDTO.Id, usuarioDTO.Email, usuarioDTO.Cpf, usuarioDTO.DataNascimento,
+            var usuario = new Usuario(usuarioDTO.Email, usuarioDTO.Cpf, usuarioDTO.DataNascimento,
                                   usuarioDTO.Nome, usuarioDTO.Senha, usuarioDTO.DataCriacao);
             await _repositorio.Adicionar(usuario);
             return usuario.Id;
         }
-        public async Task CadastrarImagem(int id, IFormFile imagem)
+        public async Task CadastrarImagem(Guid id, IFormFile imagem)
         {
             var nomeArquivo = await _servicesAWS.SalvarNoS3(imagem);
             var imagemValida = await _servicesAWS.ValidarImagem(nomeArquivo);
@@ -42,11 +42,11 @@ namespace ProjetoAutenticacaoAWS.Application.Services
         {
             return await _repositorio.BuscarTodos();
         }
-        public async Task<Usuario> BuscarUsuarioPorID(int id)
+        public async Task<Usuario> BuscarUsuarioPorID(Guid id)
         {
             return await _repositorio.BuscarPorId(id);
         }
-        public async Task<int> LoginEmail(string email, string senha)
+        public async Task<Guid> LoginEmail(string email, string senha)
         {
             var usuario = await _repositorio.BuscarPorEmail(email);
             var validacao = await VerificarSenha(usuario, senha);
@@ -60,7 +60,7 @@ namespace ProjetoAutenticacaoAWS.Application.Services
         {
             return usuario.Senha == senha;
         }
-        public async Task LoginImagem(int id, IFormFile imagem)
+        public async Task LoginImagem(Guid id, IFormFile imagem)
         {
             var usuario = await _repositorio.BuscarPorId(id);
             var verificacao = await _servicesAWS.VerificarImagem(usuario.UrlImagemCadastro, imagem);
@@ -69,11 +69,11 @@ namespace ProjetoAutenticacaoAWS.Application.Services
                 throw new DadosInvalidosException("Face não compativel!");
             }
         }
-        public async Task AtualizarEmailUsuarioPorId(int id, string email)
+        public async Task AtualizarEmailUsuarioPorId(Guid id, string email)
         {
             await _repositorio.AtualizarEmail(id, email);
         }
-        public async Task DeletarUsuarioPorID(int id)
+        public async Task DeletarUsuarioPorID(Guid id)
         {
             await _repositorio.DeletarItemDesejado(id);
         }

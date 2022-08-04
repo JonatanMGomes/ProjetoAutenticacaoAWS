@@ -8,16 +8,6 @@ namespace ProjetoAutenticacaoAWS.Test
     public class ModelBaseTest
     {
         [Fact]
-        public void TestandoSeUsuarioSalvaIdCorretamente()
-        {
-            //Arrange
-            var baseTest = CriarModelTest();
-            //Act
-            baseTest.SetId(2);
-            //Assert
-            Assert.Equal(2, baseTest.Id);
-        }
-        [Fact]
         public void TestandoSeUsuarioSalvaDataCriacaoCorretamente()
         {
             //Arrange
@@ -29,7 +19,7 @@ namespace ProjetoAutenticacaoAWS.Test
         }
         private ModelBase CriarModelTest()
         {
-            var modelTest = new ModelBase(1, DateTime.Now);
+            var modelTest = new ModelBase(Guid.NewGuid() , DateTime.Now);
             return modelTest;
         }
     }
