@@ -1,3 +1,5 @@
+using System.Text;
+using Konscious.Security.Cryptography;
 using ProjetoAutenticacaoAWS.Lib.MyExceptions;
 
 namespace ProjetoAutenticacaoAWS.Lib.Models
@@ -10,7 +12,7 @@ namespace ProjetoAutenticacaoAWS.Lib.Models
         public string Nome { get; private set; }
         public string Senha { get; private set; }
         public string? UrlImagemCadastro { get; private set; }
-        
+
         protected Usuario()
         {
 
@@ -42,7 +44,7 @@ namespace ProjetoAutenticacaoAWS.Lib.Models
         }
         public void SetSenha(string senha)
         {
-            Senha = ValidarSenha(senha);
+            Senha = CriptografarSenha(ValidarSenha(senha));
         }
         public void SetUrlImagemCadastro(string urlImagemCadastro)
         {
@@ -79,6 +81,22 @@ namespace ProjetoAutenticacaoAWS.Lib.Models
                 return senha;
             }
             throw new DadosInvalidosException("Senha precisa ter no mínimo 8 caracteres!");
+        }
+        private string CriptografarSenha(string senha)
+        {
+            var argon2 = new Argon2id(Encoding.UTF8.GetBytes(senha));
+
+            argon2.DegreeOfParallelism = 8;
+            argon2.Iterations = 4;
+            argon2.MemorySize = 1024 * 1024;
+
+            var hash = argon2.GetBytes(16);
+            return Convert.ToBase64String(hash);
+        }
+        public bool VerificarCriptografia(string senha, string hash)
+        {
+            var newHash = CriptografarSenha(senha);
+            return hash.SequenceEqual(newHash);
         }
     }
 }

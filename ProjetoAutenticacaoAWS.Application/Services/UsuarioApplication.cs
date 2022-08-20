@@ -49,16 +49,12 @@ namespace ProjetoAutenticacaoAWS.Application.Services
         public async Task<Guid> LoginEmail(string email, string senha)
         {
             var usuario = await _repositorio.BuscarPorEmail(email);
-            var validacao = await VerificarSenha(usuario, senha);
+            var validacao = usuario.VerificarCriptografia(senha, usuario.Senha);
             if (validacao)
             {
                 return usuario.Id;
             }
             throw new DadosInvalidosException("Senha incorreta!");
-        }
-        private async Task<bool> VerificarSenha(Usuario usuario, string senha)
-        {
-            return usuario.Senha == senha;
         }
         public async Task LoginImagem(Guid id, IFormFile imagem)
         {
